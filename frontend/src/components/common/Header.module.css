@@ -1,0 +1,18 @@
+.icon {
+  height: 50px;
+  width: 50px;
+}
+.headerSearch {
+  background-color: #227c9d9e;
+  color: white;
+}
+.headerSearch::placeholder {
+  color: white;
+}
+.headerSearch:focus {
+  color: white;
+  background-color: #227c9d9e;
+  border: none !important;
+  outline: none !important; /* removes the blue outline */
+  box-shadow: none !important; /* removes Bootstrap's glow */
+}

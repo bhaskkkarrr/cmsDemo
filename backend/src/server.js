@@ -1,0 +1,37 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const dbConnect = require("./config/dbConnect");
+
+// Routers Import
+const { authRouter } = require("./routes/authRouter");
+const { userRouter } = require("./routes/userRouter");
+const { teacherRouter } = require("./routes/teacherRouter");
+const { studentRouter } = require("./routes/studentRouter");
+const { noticeRouter } = require("./routes/noticeRouter");
+
+// Connect to the database
+dbConnect();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/teacher", teacherRouter);
+app.use("/api/student", studentRouter);
+app.use("/api/notice", noticeRouter);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port http://localhost:${PORT}`);
+});
