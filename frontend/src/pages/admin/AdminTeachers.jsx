@@ -4,14 +4,19 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosPersonAdd } from "react-icons/io";
 import TeacherViewCard from "../../components/teacher/TeacherViewCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../context/AuthContext";
+import { TeacherContext } from "../../context/TeacherContext";
 
 const AdminTeachers = () => {
-  const { token } = useContext(AuthContext);
-  const [teachers, setTeachers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    onSubmit,
+    handleOnDelete,
+    isLoading,
+    setSelectedTeacher,
+    teachers,
+    selectedTeacher,
+  } = useContext(TeacherContext);
   const {
     register,
     handleSubmit,
@@ -21,107 +26,7 @@ const AdminTeachers = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const formatName = (name) => {
-    if (!name) return "";
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  };
-
-  const onSubmit = async (data) => {
-    console.log("add teacher", data);
-    data.first_name = formatName(data.first_name);
-    data.last_name = formatName(data.last_name);
-    data.address = formatName(data.address);
-    data.department = data.department.toUpperCase();
-    data.designation = formatName(data.designation);
-    try {
-      let r = await fetch("http://localhost:5174/api/teacher/create", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      let res = await r.json();
-      console.log(res);
-      if (r.ok) {
-        await getAllTeachers();
-        reset();
-      }
-    } catch (e) {
-      console.log("Error in creating teacher", e);
-    }
-  };
-
-  const getAllTeachers = async () => {
-    try {
-      setIsLoading(true);
-      let r = await fetch("http://localhost:5174/api/teacher/teachers", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const res = await r.json();
-      console.log("Get all teachers res:", res);
-      if (r.ok) {
-        setTeachers(res.teachers);
-      }
-    } catch (e) {
-      console.log("Error in fetchinng all teachers", e.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleOnDelete = async (id) => {
-    const ID = id._id;
-    try {
-      let r = await fetch(`http://localhost:5174/api/teacher/${ID}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const res = await r.json();
-      console.log("Deleting teacher", res);
-      if (r.ok) {
-        setTeachers((prev) =>
-          prev.filter((t) => {
-            console.log(t);
-            return t._id !== ID;
-          })
-        );
-      }
-    } catch (e) {
-      console.log("Error deleting teacher", e);
-    }
-  };
-
-  useEffect(() => {
-    getAllTeachers();
-  }, []);
-  // const [page, setPage] = useState(1);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
-  // const limit = 10;
-  // const {
-  //   data: allTeachers = [],
-  //   isLoading,
-  //   error,
-  //   isFetching,
-  // } = useTeachers();
-
-  // const totalCount = allTeachers.length;
-  // const totalPages = Math.ceil(totalCount / limit);
-  // const teachers = allTeachers.slice((page - 1) * limit, page * limit);
-  // if (error)
-  //   return <p className="text-center text-danger">Error loading teachers</p>;
-
+  const submitHandler = (data) => onSubmit(data, reset);
   return (
     <div className="table-responsive  text-blueish col-12 col-sm-10 col-md-9 col-lg-10 p-3 ">
       <div className="container-fluid p-md-4 py-2 px-0 d-flex justify-content-between align-middle flex-wrap">
@@ -216,7 +121,7 @@ const AdminTeachers = () => {
       {/* Add Form */}
       <div className="mt-5 mb-5 d-flex justify-content-center">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(submitHandler)}
           className="card shadow-lg border-0"
         >
           <div className="card-header greenBg text-white py-3">
