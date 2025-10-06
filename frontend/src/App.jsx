@@ -19,37 +19,39 @@ import StudentLayout from "./components/student/StudentLayout";
 import TeacherLayout from "./components/teacher/TeacherLayout";
 import { AuthProvider } from "./context/AuthContext";
 import { AdminProvider } from "./context/AdminContext";
+import { NoticeProvider } from "./context/NoticeContext";
 import AdminExam from "./pages/admin/AdminExam";
 function App() {
   return (
     <AuthProvider>
       <AdminProvider>
-        <Routes>
-          {/* Public */}
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
+        <NoticeProvider>
+          <Routes>
+            {/* Public */}
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
 
-          {/* Admin */}
-          <Route
-            path="admin"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="attendance" element={<AdminAttendance />} />
-            <Route path="students" element={<AdminStudents />} />
-            <Route path="notice" element={<AdminNotice />} />
-            <Route path="teachers" element={<AdminTeachers />} />
-            <Route path="examination" element={<AdminExam />} />
-            <Route path="finance" element={<AdminFinance />} />
-          </Route>
+            {/* Admin */}
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="attendance" element={<AdminAttendance />} />
+              <Route path="students" element={<AdminStudents />} />
+              <Route path="notice" element={<AdminNotice />} />
+              <Route path="teachers" element={<AdminTeachers />} />
+              <Route path="examination" element={<AdminExam />} />
+              <Route path="finance" element={<AdminFinance />} />
+            </Route>
 
-          {/* Teachers */}
-          {/* <Route
+            {/* Teachers */}
+            {/* <Route
           path="teacher"
           element={
             <ProtectedRoute allowedRoles={["teacher", "admin"]}>
@@ -66,24 +68,25 @@ function App() {
           <Route path="message" element={<MessagePage />} />
         </Route> */}
 
-          {/* Student */}
-          <Route
-            path="student"
-            element={
-              <ProtectedRoute allowedRoles={["student", "admin"]}>
-                <StudentDashboard />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<StudentDashboard />} />
-            {/* <Route path="dashboard" element={<Dashboard />} /> */}
-            <Route path="notice" element={<StudentNotice />} />
-            <Route path="message" element={<MessagePage />} />
-          </Route>
+            {/* Student */}
+            <Route
+              path="student"
+              element={
+                <ProtectedRoute allowedRoles={["student", "admin"]}>
+                  <StudentDashboard />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<StudentDashboard />} />
+              {/* <Route path="dashboard" element={<Dashboard />} /> */}
+              <Route path="notice" element={<StudentNotice />} />
+              <Route path="message" element={<MessagePage />} />
+            </Route>
 
-          {/* 404 */}
-          <Route path="*" element={<Page404 />} />
-        </Routes>
+            {/* 404 */}
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </NoticeProvider>
       </AdminProvider>
     </AuthProvider>
   );

@@ -1,58 +1,65 @@
-import { IoMdNotifications } from "react-icons/io";
-import { IoMdAdd } from "react-icons/io";
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
+import { IoMdNotifications, IoMdAdd } from "react-icons/io";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { notices } from "../../../store/noticeApi";
-
 import NoticeItem from "./Notices";
+import { useContext } from "react";
+import { NoticeContext } from "../../../context/NoticeContext";
+import styles from "./NoticeBoard.module.css";
 
 export default function NoticeBoard() {
+  const { getAllNotices, notices, isLoading } = useContext(NoticeContext);
   const navigate = useNavigate();
+
   const handleOnClickEditIcon = () => {
     navigate("/admin/notice");
   };
+
   return (
-    <div className="shadow rounded-4 bg-light p-3 row m-3 ">
-      <div className="fw-bold mb-3 fs-4 d-flex justify-between align-items-center">
-        <div className="d-flex align-items-center">
-          <IoMdNotifications className="blueTextfs-3" />
-          Notice Board
+    <div className={styles.noticeBoardContainer}>
+      <div className={styles.header}>
+        <div className={styles.titleSection}>
+          <IoMdNotifications className={styles.titleIcon} />
+          <span>Notice Board</span>
         </div>
 
-        <div className="flex space-x-2">
-          {/* Edit */}
+        <div className={styles.actionButtons}>
           <button
             onClick={handleOnClickEditIcon}
-            className="p-2 bg-blueish-tint hover:bg-gray-200 rounded-full transition rounded-start-3"
+            className={`${styles.actionButton} ${styles.editButton}`}
             title="Edit"
           >
-            <MdEdit className="w-5 h-5 text-greenish" />
+            <MdEdit size={20} />
           </button>
 
-          {/* Delete */}
           <button
             onClick={handleOnClickEditIcon}
-            className="p-2 bg-blueish-tint hover:bg-red-100 rounded-full transition"
+            className={`${styles.actionButton} ${styles.deleteButton}`}
             title="Delete"
           >
-            <MdDelete className="w-5 h-5 text-red-600" />
+            <MdDelete size={20} />
           </button>
 
-          {/* Add */}
           <button
             onClick={handleOnClickEditIcon}
-            className="p-2 bg-blueish-tint hover:bg-gray-200 rounded-full transition rounded-end-3"
+            className={`${styles.actionButton} ${styles.addButton}`}
             title="Add"
           >
-            <IoMdAdd className="w-5 h-5 text-greenish" />
+            <IoMdAdd size={20} />
           </button>
         </div>
       </div>
-      <ul className="list-group list-group-flush">
-        {notices.map((notice) => (
-          <NoticeItem key={notice.id} notice={notice} />
-        ))}
+
+      <ul className={styles.noticeList}>
+        {isLoading ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner} />
+            <strong>Loading...</strong>
+          </div>
+        ) : (
+          notices.map((notice) => (
+            <NoticeItem key={notice._id} notice={notice} />
+          ))
+        )}
       </ul>
     </div>
   );

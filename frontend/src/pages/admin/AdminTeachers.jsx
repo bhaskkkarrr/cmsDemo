@@ -4,10 +4,12 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosPersonAdd } from "react-icons/io";
 import TeacherViewCard from "../../components/teacher/TeacherViewCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../context/AuthContext";
 
 const AdminTeachers = () => {
+  const { token } = useContext(AuthContext);
   const [teachers, setTeachers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -18,8 +20,6 @@ const AdminTeachers = () => {
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  const token = localStorage.getItem("token");
 
   const formatName = (name) => {
     if (!name) return "";

@@ -1,149 +1,101 @@
-import { useState, useRef, useEffect } from "react";
-import { IoMdNotifications } from "react-icons/io";
-import { IoMdAdd } from "react-icons/io";
+import { useContext } from "react";
+import { IoMdNotifications, IoMdAdd } from "react-icons/io";
+import style from "./AdminNotice.module.css";
 import AddNotice from "../../components/admin/components/AddNotice";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { NoticeContext } from "../../context/NoticeContext";
 
 const AdminNotice = () => {
-  const token = localStorage.getItem("token");
-  const [notice, setNotice] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const cardRef = useRef(null);
+  const {
+    getAllNotices,
+    notices,
+    isLoading,
+    handleOnDelete,
+    setShowForm,
+    showForm,
+    cardRef,
+  } = useContext(NoticeContext);
 
-  // Close when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (cardRef.current && !cardRef.current.contains(event.target)) {
-        setShowForm(false);
-      }
-    };
-    if (showForm) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showForm]);
-
-  const getAllNotices = async () => {
-    try {
-      setIsLoading(true);
-      let r = await fetch("http://localhost:5174/api/notice/notices", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const res = await r.json();
-      console.log("All notices", res);
-
-      if (r.ok) {
-        setNotice(res.notices);
-        setShowForm(false);
-      }
-    } catch (er) {
-      console.log("Error in fetchinng all notices", er.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleOnDelete = async (id) => {
-    try {
-      let r = await fetch(`http://localhost:5174/api/notice/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const res = await r.json();
-      console.log("Delete Notice", res);
-
-      if (r.ok) {
-        setNotice((p) => p.filter((t) => t._id !== id));
-      }
-    } catch (e) {
-      console.log("Error deleting notice", e);
-    }
-  };
-
-  useEffect(() => {
-    getAllNotices();
-  }, []);
   return (
-    <div className="col-12 col-sm-10 col-md-9 col-lg-10">
+    <div className="flex-1 p-4">
       {/* Notice List */}
-      <div className="shadow rounded-4 bg-light p-3 m-3 ">
-        <ul className="list-group list-group-flush">
-          <div className="fw-bold mb-3 fs-2">
-            <div className="d-flex justify-between align-items-center blueText">
-              <div className="d-flex align-items-center ">
-                <IoMdNotifications className="me-2" />
-                Notice Board
-              </div>
-              <div className="">
-                <button
-                  onClick={() => setShowForm(true)}
-                  className="flex items-center gap-2  bg-greenish p-2 fs-5 rounded-4 text-white rounded-full hover:bg-greenish-400 transition"
-                >
-                  <IoMdAdd size={20} /> Add Notice
-                </button>
-              </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
+        <div className="p-6">
+          {/* Header Section */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3 blueText">
+              <IoMdNotifications className="w-8 h-8" />
+              <h1 className="text-2xl font-semibold">Notice Board</h1>
             </div>
+            <button
+              onClick={() => setShowForm(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-greenish text-white rounded-full hover:bg-greenish-400 transition-colors duration-200 font-medium rounded-5"
+            >
+              <IoMdAdd className="w-5 h-5" />
+              Add Notice
+            </button>
           </div>
-          {isLoading ? (
-            <div>
-              <ul className="animate-pulse">
-                <li colSpan="8" className="h-24 mb-2 bg-gray-300 rounded"></li>
-                <li colSpan="8" className="h-24 mb-2 bg-gray-300 rounded"></li>
-                <li colSpan="8" className="h-24 mb-2 bg-gray-300 rounded"></li>
-                <li colSpan="8" className="h-24 mb-2 bg-gray-300 rounded"></li>
-                <li colSpan="8" className="h-24 mb-2 bg-gray-300 rounded"></li>
-              </ul>
-            </div>
-          ) : (
-            <>
-              {notice.map((notice) => (
-                <div key={notice._id} className="">
-                  <li className="list-group-item ">
-                    <div className="fw-bold d-flex justify-between flex-wrap">
-                      <div className="d-flex ">{notice.title}</div>
-                      <div className="d-flex  text-greenish">
-                        <div className="badge me-2 me-lg-4 badge-success d-flex bg-greenish justify-content-center align-items-center">
+
+          {/* Notices List */}
+          <div className="space-y-4">
+            {isLoading ? (
+              <div className="space-y-4">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="h-24 bg-gray-100 rounded-xl"></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                {notices.map((notice) => (
+                  <div key={notice._id} className={`${style.noticeItem}`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900">
+                        {notice.title}
+                      </h4>
+                      <div className="flex items-center gap-4">
+                        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
                           {notice.submitted_on}
-                        </div>
-                        <div className="d-flex fs-4">
-                          <MdEdit className="me-2 cursor-pointer" />
-                          <MdDelete
-                            className="cursor-pointer"
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="p-2 hover:bg-blue-200 rounded-5 bg-blue-100 transition-colors duration-200"
+                            aria-label="Edit notice"
+                          >
+                            <MdEdit className="w-5 h-5 text-blue-600" />
+                          </button>
+                          <button
                             onClick={() => handleOnDelete(notice._id)}
-                          />
+                            className="p-2 hover:bg-red-200 rounded-5 transition-colors duration-200 bg-red-100"
+                            aria-label="Delete notice"
+                          >
+                            <MdDelete className="w-5 h-5 text-red-600" />
+                          </button>
                         </div>
                       </div>
                     </div>
-                    <p className="mb-1">{notice.body}</p>
-                    <div className="d-flex justify-content-end">
-                      <span className="fw-bold">By: </span>
-                      {notice.submitted_by}
+                    <p className="text-gray-600 mb-2">{notice.body}</p>
+                    <div className="flex justify-end items-center gap-2 text-sm text-gray-500">
+                      <span className="font-medium">By:</span>
+                      <span>{notice.submitted_by}</span>
                     </div>
-                  </li>
-                </div>
-              ))}
-            </>
-          )}
-        </ul>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Add Notice Button */}
-
-      {/* Hover Card / Popup */}
+      {/* Add Notice Modal */}
       {showForm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-blueish-bigtint z-50">
-          <div ref={cardRef} className="p-6 rounded-lg w-75">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div
+            ref={cardRef}
+            className="bg-white rounded-2xl shadow-lg w-full max-w-3xl mx-4 overflow-hidden"
+          >
             <AddNotice getAllNotices={getAllNotices} />
           </div>
         </div>

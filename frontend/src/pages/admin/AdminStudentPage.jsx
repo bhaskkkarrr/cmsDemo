@@ -2,12 +2,14 @@ import StudentRow from "../../components/student/StudentRow";
 import SkeletonRow from "../../components/common/SkeletonRow";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoIosPersonAdd } from "react-icons/io";
 import StudentViewCard from "../../components/student/StudentViewCard";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../context/AuthContext";
 
 const AdminStudents = () => {
+  const { token } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [student, setStudent] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -20,7 +22,6 @@ const AdminStudents = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const token = localStorage.getItem("token");
   const formatName = (name) => {
     if (!name) return "";
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();

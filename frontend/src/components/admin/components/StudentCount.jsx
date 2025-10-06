@@ -1,30 +1,23 @@
 import { FaArrowUpLong } from "react-icons/fa6";
-import { useStudents } from "../../../store/studentApi";
-const StudentCount = () => {
-  const { data: allStudents = [], isLoading, error } = useStudents();
-  const totalCount = allStudents.length;
-  if (error)
-    return <p className="text-center text-danger">Error loading students</p>;
 
+const StudentCount = () => {
   return (
-    <div className="me-3">
-      <span className="badge rounded-pill d-flex">
-        <FaArrowUpLong className="fw-bold" />
+    <div className="blueBg p-4 p-lg-2 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 border-4 border-gray-100">
+      <div className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-50 text-green-600 rounded-full font-medium text-sm mb-4">
+        <FaArrowUpLong className="animate-bounce" />
         <span>4%</span>
-      </span>
-      <ul className="list-unstyled">
-        {isLoading ? (
-          <li className="fs-2 fw-bold animate-pulse">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </li>
-        ) : (
-          <li className="fs-2 fw-bold">{totalCount}</li>
-        )}
-        <li className=" text-muted-small">Students</li>
-      </ul>
+      </div>
+
+      <div className="space-y-1">
+        <h3 className="text-white text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text ">
+          2000
+        </h3>
+        <p className="text-white text-sm font-medium uppercase tracking-wide">
+          Students
+        </p>
+      </div>
     </div>
   );
 };
+
 export default StudentCount;

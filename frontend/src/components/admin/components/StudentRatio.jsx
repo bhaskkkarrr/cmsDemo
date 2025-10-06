@@ -40,7 +40,7 @@ const StudentRatio = () => {
             cx="50%"
             cy="50%"
             innerRadius="10%"
-            outerRadius="80%"
+            outerRadius="100%"
             barSize={15}
             data={data}
           >

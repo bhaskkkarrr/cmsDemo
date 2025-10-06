@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdNotifications } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
+import { NoticeContext } from "../../../context/NoticeContext";
 
-function AddNotice({ getAllNotices }) {
-  const formatName = (name) => {
-    if (!name) return "";
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  };
+function AddNotice() {
+  const { onSubmit } = useContext(NoticeContext);
   const {
     handleSubmit,
     register,
@@ -15,31 +13,8 @@ function AddNotice({ getAllNotices }) {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const token = localStorage.getItem("token");
-  const onSubmit = async (data) => {
-    try {
-      console.log(data);
-      data.submitted_by = formatName(data.submitted_by);
-      const r = await fetch("http://localhost:5174/api/notice/add", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const res = await r.json();
-      console.log("Adding Notice", res);
-      if (r.ok) {
-        await getAllNotices();
-        reset();
-      }
-    } catch (error) {
-      console.log("Frontend error", error);
-    }
-  };
-
+  
+  const submitHandler = (data) => onSubmit(data, reset);
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Header */}
@@ -60,7 +35,7 @@ function AddNotice({ getAllNotices }) {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="p-4">
+      <form onSubmit={handleSubmit(submitHandler)} className="p-4">
         <div className="row g-3">
           {/* Author Name */}
           <div className="col-12 col-md-6">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./Notices.module.css";
 
 export default function NoticeItem({ notice }) {
   const [expanded, setExpanded] = useState(false);
@@ -6,21 +7,21 @@ export default function NoticeItem({ notice }) {
   const toggleExpanded = () => setExpanded((prev) => !prev);
 
   const preview =
-    notice.content.length > 100
-      ? notice.content.substring(0, 100) + "..."
-      : notice.content;
+    notice.body.length > 100
+      ? notice.body.substring(0, 100) + "..."
+      : notice.body;
 
   return (
-    <li className="list-group-item bg-light">
-      <div className="fw-bold d-flex justify-between pb-2">
-        {notice.title}
+    <li className={`${styles.noticeItem} ${expanded ? styles.fadeIn : ""}`}>
+      <div className={styles.noticeHeader}>
+        <h3 className={styles.noticeTitle}>{notice.title}</h3>
 
-        {/* Date Badge */}
-        <div className="badge badge-success d-flex bg-greenish justify-content-center align-items-center">
+        <div className={`${styles.dateBadge} h-8 rounded-pill px-3 py-2 `}>
           <svg
-            className="size-[1em]"
-            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <g fill="currentColor" strokeLinejoin="miter" strokeLinecap="butt">
               <circle
@@ -43,19 +44,16 @@ export default function NoticeItem({ notice }) {
               ></polyline>
             </g>
           </svg>
-          {notice.date}
+          <span>{notice.submitted_on}</span>
         </div>
       </div>
-      <p className="mb-1">
-        {expanded ? notice.content : preview}
-        {notice.content.length > 100 && (
-          <span
-            onClick={toggleExpanded}
-            className="blueTextms-1"
-            style={{ cursor: "pointer", fontWeight: "500" }}
-          >
-            {expanded ? " Show less" : " Read more"}
-          </span>
+
+      <p className={styles.noticeContent}>
+        {expanded ? notice.body : preview}
+        {notice.body.length > 100 && (
+          <button onClick={toggleExpanded} className={styles.readMoreButton}>
+            {expanded ? "Show less" : "Read more"}
+          </button>
         )}
       </p>
     </li>
