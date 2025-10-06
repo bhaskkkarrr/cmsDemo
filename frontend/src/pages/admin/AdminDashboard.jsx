@@ -3,8 +3,6 @@ import NoticeBoard from "../../components/admin/components/NoticeBoard";
 import RightSideBar from "../../components/admin/components/RightSideBar";
 import StudentRatio from "../../components/admin/components/StudentRatio";
 import Messages from "../../components/admin/components/MessageContainer";
-import { useContext, useEffect } from "react";
-import { AdminContext } from "../../context/AdminContext";
 const AdminDashboard = () => {
 
   return (

@@ -3,8 +3,12 @@ import { IoMdNotifications } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import styles from "./Header.module.css";
 import { RiMenuLine } from "react-icons/ri";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Header = ({ onToggleSidebar }) => {
+  const { user } = useContext(AuthContext);
+  {console.log("User is: " ,user)}
   return (
     <div className="px-3 py-2 bg-light headerSt">
       <div className="container-fluid flex-wrap d-flex justify-content-between align-items-center px-0">
@@ -67,8 +71,8 @@ const Header = ({ onToggleSidebar }) => {
               <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 <li className="nav-item d-flex align-items-center">
                   <div className="me-2 d-none text-end d-md-inline">
-                    <div className="fw-bold">Henry Sharma</div>
-                    <div className="text-muted small">Admin</div>
+                    <div className="fw-bold">{user?.college_name || "Guest"}</div>
+                    <div className="text-muted small">{user?.role || "Not Logged In"}</div>
                   </div>
                   <FaUser
                     size={28}
