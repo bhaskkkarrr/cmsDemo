@@ -17,12 +17,15 @@ dbConnect();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.use(cors());
-app.use(cors());
-// {
-//   origin: "cms-demo-murex.vercel.app",
-//   credentials: true,
-// }
+// ✅ Proper CORS configuration
+app.use(
+  cors({
+    origin: "https://cms-demo-murex.vercel.app", // include the full URL with https
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
