@@ -15,7 +15,7 @@ exports.postAddNotice = async (req, res) => {
     });
 
     await newNotice.save();
-    res.status(200).json({ success: true, message: "Notice Added" });
+    res.status(200).json({ success: true, message: "Notice Added", newNotice });
   } catch (err) {
     res
       .status(500)
@@ -26,9 +26,9 @@ exports.postAddNotice = async (req, res) => {
 exports.getAllNotices = async (req, res) => {
   try {
     const { id } = req.user;
-    const notices = await Notice.find({ college_id: id }).select(
-      "-createdAt -college_id"
-    );
+    const notices = await Notice.find({ college_id: id })
+      .sort({ createdAt: -1 })
+      .select("-createdAt -college_id");
 
     if (notices) {
       res.status(200).json({ success: true, message: "All notices", notices });
@@ -50,7 +50,7 @@ exports.deleteNotice = async (req, res) => {
     if (!notice) {
       res.status(401).json({ success: false, message: "No teacher found" });
     }
-    await Notice.deleteOne();
+    await notice.deleteOne();
     res.status(200).json({ success: true, message: "Notice Deleted" });
   } catch (error) {
     res.status(500).json({ success: false, message: error });

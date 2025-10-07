@@ -1,84 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
-// const sampleStudents = [
-//   {
-//     id: 1,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 16,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 15,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 14,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 13,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 12,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   {
-//     id: 11,
-//     name: "Alice",
-//     course: "BCA",
-//     date: "2025-09-14",
-//     status: "Present",
-//   },
-//   { id: 2, name: "Bob", course: "MCA", date: "2025-09-14", status: "Absent" },
-//   { id: 3, name: "Bob", course: "MCA", date: "2025-09-14", status: "Absent" },
-//   {
-//     id: 4,
-//     name: "Alicee",
-//     course: "MCA",
-//     date: "2025-09-14",
-//     status: "Absent",
-//   },
-//   { id: 5, name: "Bob", course: "MCA", date: "2025-09-14", status: "Absent" },
-//   { id: 6, name: "Bob", course: "MCA", date: "2025-09-14", status: "Absent" },
-//   { id: 7, name: "Charlie", course: "BBA", date: "2025-09-14", status: "Late" },
-//   {
-//     id: 17,
-//     name: "Charlie",
-//     course: "BBA",
-//     date: "2025-09-14",
-//     status: "Late",
-//   },
-//   {
-//     id: 71,
-//     name: "Charlie",
-//     course: "BBA",
-//     date: "2025-09-14",
-//     status: "Late",
-//   },
-// ];
+import { StudentContext } from "../../context/StudentContext";
 
 const AdminAttendance = () => {
+  const { getAllStudents, student } = useContext(StudentContext);
   // const [attendance, setAttendance] = useState(sampleStudents);
   const [filterDate, setFilterDate] = useState("");
   const [search, setSearch] = useState("");
@@ -118,33 +43,6 @@ const AdminAttendance = () => {
   //     fill: "#28a745",
   //   },
   // ];
-
-  const token = localStorage.getItem("token");
-  const [students, setStudents] = useState([]);
-  // Getting All students
-  const getAllStudents = async () => {
-    try {
-      let r = await fetch("http://localhost:5174/api/student/students", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const res = await r.json();
-      if (r.ok) {
-        setStudents(res.students);
-      }
-      console.log("Getting students in Attendance", students);
-    } catch (error) {
-      console.log("Error in fetching all students", error);
-    }
-  };
-
-  useEffect(() => {
-    getAllStudents();
-  }, []);
   return (
     <div className="col-12 col-sm-10 col-md-9 col-lg-10 ">
       <div className="m-3 rounded-4 shadow-lg p-3 bg-white ">
@@ -257,7 +155,7 @@ const AdminAttendance = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student) => (
+              {student.map((student) => (
                 <tr key={student.roll_number} className="hover:bg-gray-50">
                   <td className="border p-3">{student.roll_number}</td>
                   <td className="border p-3">{student.first_name}</td>

@@ -1,4 +1,6 @@
 import { IoMdNotifications, IoMdAdd } from "react-icons/io";
+import { MdEditSquare } from "react-icons/md";
+
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import NoticeItem from "./Notices";
@@ -7,7 +9,7 @@ import { NoticeContext } from "../../../context/NoticeContext";
 import styles from "./NoticeBoard.module.css";
 
 export default function NoticeBoard() {
-  const { getAllNotices, notices, isLoading } = useContext(NoticeContext);
+  const { notices, isLoading } = useContext(NoticeContext);
   const navigate = useNavigate();
 
   const handleOnClickEditIcon = () => {
@@ -28,23 +30,7 @@ export default function NoticeBoard() {
             className={`${styles.actionButton} ${styles.editButton}`}
             title="Edit"
           >
-            <MdEdit size={20} />
-          </button>
-
-          <button
-            onClick={handleOnClickEditIcon}
-            className={`${styles.actionButton} ${styles.deleteButton}`}
-            title="Delete"
-          >
-            <MdDelete size={20} />
-          </button>
-
-          <button
-            onClick={handleOnClickEditIcon}
-            className={`${styles.actionButton} ${styles.addButton}`}
-            title="Add"
-          >
-            <IoMdAdd size={20} />
+            <MdEditSquare size={20} />
           </button>
         </div>
       </div>

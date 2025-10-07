@@ -4,6 +4,7 @@ import Header from "../../components/common/Header";
 import SideBar from "../../components/common/SideBar";
 import Footer from "../../components/common/Footer";
 import { PiExamFill } from "react-icons/pi";
+import { FaChalkboardTeacher } from "react-icons/fa";
 import {
   RiDashboardHorizontalFill,
   RiGraduationCapFill,
@@ -36,6 +37,10 @@ const AdminLayout = () => {
     {
       name: "Examination",
       icon: <PiExamFill className="me-2 fs-4 greenText" />,
+    },
+    {
+      name: "Class",
+      icon: <FaChalkboardTeacher className="me-2 fs-4 greenText" />,
     },
   ];
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

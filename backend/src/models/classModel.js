@@ -5,21 +5,42 @@ const classSchema = new mongoose.Schema({
     ref: "College",
     required: true,
   },
-  department_name: {
+  class_text: {
     type: String,
     required: true,
+    unique: true,
+  },
+  class_name: {
+    type: String,
   },
   section: {
     type: String,
-    required: true,
   },
-  year: {
+  class_teacher: {
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "Teacher",
+    type: String,
+  },
+  capacity: {
+    type: String,
+  },
+  studentsEnrolled: {
     type: Number,
-    required: true,
+    default: 0, // can increment as students are enrolled
+  },
+  room: {
+    type: String,
+    unique:true, // optional room number
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+});
+classSchema.pre("save", function (next) {
+  if (!this.class_name) {
+    this.class_name = this.class_text;
+  }
+  next();
 });
 module.exports = mongoose.model("Class", classSchema);

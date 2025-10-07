@@ -8,12 +8,15 @@
   --color-greenish: #17c3b2;
   --color-greenish-400: #158e82;
   --color-greenish-tint: #17c3b24c;
-  --color-greenish-10: #17c3b2ac;
+  --color-greenish-10: #17c3b209;
+  --color-greenish-20: #17c3b225;
   --color-blueish: #227c9d;
   --color-blueish-400: #1d5f77;
   --color-blueish-bigtint: #227c9dd8;
+  --color-blueish-100: #227c9d27;
+  --color-blueish-200: #227c9d63;
 }
 
 /* *{
-  color:#17c3b25f ;
+  color:#17c3b225 ;
 } */

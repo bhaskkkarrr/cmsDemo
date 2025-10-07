@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import BASE_API from "../../utils/baseApi";
 
 export const NoticeContext = createContext();
 
@@ -19,7 +20,7 @@ export const NoticeProvider = ({ children }) => {
     try {
       console.log(data);
       data.submitted_by = formatName(data.submitted_by);
-      const r = await fetch("http://localhost:5174/api/notice/add", {
+      const r = await fetch(`${BASE_API}notice/add`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -44,7 +45,7 @@ export const NoticeProvider = ({ children }) => {
   const getAllNotices = async () => {
     try {
       setIsLoading(true);
-      let r = await fetch("http://localhost:5174/api/notice/notices", {
+      let r = await fetch(`${BASE_API}notice/notices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +71,7 @@ export const NoticeProvider = ({ children }) => {
 
   const handleOnDelete = async (id) => {
     try {
-      let r = await fetch(`http://localhost:5174/api/notice/${id}`, {
+      let r = await fetch(`${BASE_API}notice/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

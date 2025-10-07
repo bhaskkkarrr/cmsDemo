@@ -1,28 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { FaMale } from "react-icons/fa";
 import { FaFemale } from "react-icons/fa";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
-
-const data = [
-  {
-    name: "TotalStudents",
-    count: 200,
-    fill: "#f8f9fa",
-  },
-  {
-    name: "Girls",
-    count: 70,
-    fill: "#227c9d",
-  },
-  {
-    name: "Boys",
-    count: 130,
-    fill: "#17c3b2",
-  },
-];
+import { StudentContext } from "../../../context/StudentContext";
 
 const StudentRatio = () => {
+  const { student } = useContext(StudentContext);
+  const data = [
+    {
+      name: "TotalStudents",
+      count: student.length,
+      fill: "#f8f9fa",
+    },
+    {
+      name: "Girls",
+      count: student.filter((s) => s.gender === "Female").length,
+      fill: "#227c9d",
+    },
+    {
+      name: "Boys",
+      count:  student.filter((s) => s.gender === "Male").length,
+      fill: "#17c3b2",
+    },
+  ];
+
   return (
     <div className="shadow rounded-4 bg-light d-flex flex-column col-lg-11 mx-3 mb-lg-3 mb-3 p-2">
       {/* Title */}
