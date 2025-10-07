@@ -13,6 +13,9 @@ const { classRouter } = require("./routes/classRouter");
 
 // Connect to the database
 dbConnect();
+dbConnect()
+  .then(() => console.log("DB connected!"))
+  .catch((err) => console.log(err));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
