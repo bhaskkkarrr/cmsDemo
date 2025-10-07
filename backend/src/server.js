@@ -18,13 +18,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // app.use(cors());
-app.use(
-  cors({
-    origin: "cms-demo-murex.vercel.app",
-    credentials: true,
-  })
-);
-
+app.use(cors());
+// {
+//   origin: "cms-demo-murex.vercel.app",
+//   credentials: true,
+// }
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
