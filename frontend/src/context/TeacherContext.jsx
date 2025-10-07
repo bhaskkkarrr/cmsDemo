@@ -24,7 +24,7 @@ export const TeacherProvider = ({ children }) => {
     data.department = data.department.toUpperCase();
     data.designation = formatName(data.designation);
     try {
-      let r = await fetch(`${BASE_API}teacher/create`, {
+      let r = await fetch(`${BASE_API}/teacher/create`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -47,7 +47,7 @@ export const TeacherProvider = ({ children }) => {
   const getAllTeachers = async () => {
     try {
       setIsLoading(true);
-      let r = await fetch(`${BASE_API}teacher/teachers`, {
+      let r = await fetch(`${BASE_API}/teacher/teachers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const TeacherProvider = ({ children }) => {
   const handleOnDelete = async (id) => {
     const ID = id._id;
     try {
-      let r = await fetch(`${BASE_API}teacher/${ID}`, {
+      let r = await fetch(`${BASE_API}/teacher/${ID}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

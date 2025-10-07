@@ -24,7 +24,7 @@ export const StudentProvider = ({ children }) => {
     data.mother_name = formatName(data.mother_name);
     data.guardian_name = formatName(data.guardian_name);
     try {
-      let r = await fetch(`${BASE_API}student/create`, {
+      let r = await fetch(`${BASE_API}/student/create`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -47,7 +47,7 @@ export const StudentProvider = ({ children }) => {
   const getAllStudents = async () => {
     try {
       setIsLoading(true);
-      let r = await fetch(`${BASE_API}student/students`, {
+      let r = await fetch(`${BASE_API}/student/students`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const StudentProvider = ({ children }) => {
   const handleOnDelete = async (id) => {
     const ID = id._id;
     try {
-      let r = await fetch(`${BASE_API}student/${ID}`, {
+      let r = await fetch(`${BASE_API}/student/${ID}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
