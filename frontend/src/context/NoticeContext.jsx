@@ -20,7 +20,7 @@ export const NoticeProvider = ({ children }) => {
     try {
       console.log(data);
       data.submitted_by = formatName(data.submitted_by);
-      const r = await fetch(`${BASE_API}/notice/add`, {
+      const r = await fetch(`${BASE_API}/api/notice/add`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -45,7 +45,7 @@ export const NoticeProvider = ({ children }) => {
   const getAllNotices = async () => {
     try {
       setIsLoading(true);
-      let r = await fetch(`${BASE_API}/notice/notices`, {
+      let r = await fetch(`${BASE_API}/api/notice/notices`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export const NoticeProvider = ({ children }) => {
 
   const handleOnDelete = async (id) => {
     try {
-      let r = await fetch(`${BASE_API}/notice/${id}`, {
+      let r = await fetch(`${BASE_API}/api/notice/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

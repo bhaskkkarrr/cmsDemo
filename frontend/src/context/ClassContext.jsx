@@ -13,7 +13,7 @@ export const ClassProvider = ({ children }) => {
 
   const onSubmit = async (data) => {
     try {
-      let r = await fetch(`${BASE_API}/class/create`, {
+      let r = await fetch(`${BASE_API}/api/class/create`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -32,7 +32,7 @@ export const ClassProvider = ({ children }) => {
   const getAllClasses = async () => {
     try {
       setIsLoading(true);
-      let r = await fetch(`${BASE_API}/class/classes`, {
+      let r = await fetch(`${BASE_API}/api/class/classes`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export const ClassProvider = ({ children }) => {
 
   const handleDelete = async (id) => {
     try {
-      let r = await fetch(`${BASE_API}/class/${id}`, {
+      let r = await fetch(`${BASE_API}/api/class/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export const ClassProvider = ({ children }) => {
   const onUpdate = async (id, data) => {
     console.log("ID", id);
     try {
-      let r = await fetch(`${BASE_API}/class/update/${id}`, {
+      let r = await fetch(`${BASE_API}/api/class/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

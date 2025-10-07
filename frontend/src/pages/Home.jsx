@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import BASE_API from "../../utils/baseApi";
 
 const Home = () => {
   const { login } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const Home = () => {
     };
 
     try {
-      let r = await fetch("http://localhost:5174/api/auth/login", {
+      let r = await fetch(`${BASE_API}/api/auth/login`, {
         method: "POST",
         body: JSON.stringify(payLoad),
         headers: {

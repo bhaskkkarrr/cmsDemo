@@ -8,7 +8,7 @@ const Signup = () => {
     register,
     handleSubmit,
     setError,
-    watch, 
+    watch,
     formState: { errors, isSubmitting, validate },
   } = useForm();
 
@@ -22,7 +22,7 @@ const Signup = () => {
     };
 
     try {
-      let r = await fetch("http://localhost:5174/api/auth/signup", {
+      let r = await fetch(`${BASE_API}/api/auth/signup`, {
         method: "POST",
         body: JSON.stringify(payLoad),
         headers: {
